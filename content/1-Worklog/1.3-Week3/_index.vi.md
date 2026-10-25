@@ -1,59 +1,38 @@
 ---
 title: "Worklog Tuần 3"
-date: 2024-01-01
-weight: 1
+date: 2026-10-04
+weight: 3
 chapter: false
 pre: " <b> 1.3. </b> "
 ---
-{{% notice warning %}}
-⚠️ **Lưu ý:** Các thông tin dưới đây chỉ nhằm mục đích tham khảo, vui lòng **không sao chép nguyên văn** cho bài báo cáo của bạn kể cả warning này.
-{{% /notice %}}
-
 
 ### Mục tiêu tuần 3:
 
-* Kết nối, làm quen với các thành viên trong First Cloud AI Journey.
-* Hiểu dịch vụ AWS cơ bản, cách dùng console & CLI.
+* Hiểu dự án nhóm (shop-ai: cửa hàng linh kiện điện tử serverless trên AWS, có gợi ý mua kèm bằng AI) và xác định vai trò của mình: dữ liệu, gợi ý, bảo mật dữ liệu và AI.
+* Chuẩn bị nền dữ liệu và bảo mật cho tính năng gợi ý: dữ liệu giả lập, mô hình dữ liệu, threat model đầu tiên.
 
-### Các công việc cần triển khai trong tuần này:
-| Thứ | Công việc                                                                                                                                                                                   | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu                            |
-| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ----------------------------------------- |
-| 2   | - Làm quen với các thành viên FCAJ <br> - Đọc và lưu ý các nội quy, quy định tại đơn vị thực tập                                                                                             | 11/08/2025   | 11/08/2025      |
-| 3   | - Tìm hiểu AWS và các loại dịch vụ <br>&emsp; + Compute <br>&emsp; + Storage <br>&emsp; + Networking <br>&emsp; + Database <br>&emsp; + ... <br>                                            | 12/08/2025   | 12/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 4   | - Tạo AWS Free Tier account <br> - Tìm hiểu AWS Console & AWS CLI <br> - **Thực hành:** <br>&emsp; + Tạo AWS account <br>&emsp; + Cài AWS CLI & cấu hình <br> &emsp; + Cách sử dụng AWS CLI | 13/08/2025   | 13/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 5   | - Tìm hiểu EC2 cơ bản: <br>&emsp; + Instance types <br>&emsp; + AMI <br>&emsp; + EBS <br>&emsp; + ... <br> - Các cách remote SSH vào EC2 <br> - Tìm hiểu Elastic IP   <br>                  | 14/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
-| 6   | - **Thực hành:** <br>&emsp; + Tạo EC2 instance <br>&emsp; + Kết nối SSH <br>&emsp; + Gắn EBS volume                                                                                         | 15/08/2025   | 15/08/2025      | <https://cloudjourney.awsstudygroup.com/> |
+### Các công việc đã làm trong tuần:
 
+| Thứ | Công việc | Ngày bắt đầu | Ngày hoàn thành | Nguồn tài liệu |
+| --- | --- | --- | --- | --- |
+| 2 | - Thiết kế và viết bộ sinh dữ liệu giả lập bằng Python: danh mục sản phẩm, 4 nhóm khách hàng, quy luật mua kèm, nhiễu, chia train/test theo thời gian <br> - Thêm hành vi giỏ hàng thực tế: đơn bị huỷ, món bị bỏ khỏi giỏ, món để trong giỏ mua sau | 28/09 | 02/10 | `generate_synthetic.py` |
+| 3 | - Tìm hiểu cách tính tiền của Amazon Personalize (campaign thời gian thực bị tính mức tối thiểu so với batch inference) và giới hạn của Free plan <br> - 01/10: theo góp ý của mentor, nhóm quyết định không dùng Personalize mà tự xây mô hình trên Lambda + DynamoDB (ADR-0016) | 29/09 | 01/10 | Trang giá Amazon Personalize, ADR-0016 |
+| 4 | - Đọc kế hoạch dự án nhóm và ghi chú review ngày 30/09 <br> - Thống nhất phạm vi của mình với nhóm: dữ liệu, gợi ý, bảo mật dữ liệu và AI | 30/09 | 30/09 | README của repo và `docs/project-plan.md` |
+| 5 | - Lên văn phòng <br> - Viết bản nháp đầu tiên của threat model STRIDE cho pipeline gợi ý: 6 ranh giới tin cậy, các mối đe doạ và cách giảm thiểu đề xuất <br> - Lên kế hoạch thí nghiệm đầu độc dữ liệu cho tuần 5 | 01/10 | 01/10 | `threat-model.md`, Microsoft STRIDE |
+| 6 | - Thiết kế mô hình dữ liệu (ERD) bằng dbdiagram.io: users, products, orders, order_items, cart_items, events, recs <br> - Định nghĩa các loại sự kiện và quy tắc chỉ dịch vụ đặt hàng mới được tạo sự kiện `purchase` <br> - Chia sẻ schema với các bạn trong nhóm để làm hợp đồng API | 02/10 | 02/10 | dbdiagram.io |
 
 ### Kết quả đạt được tuần 3:
 
-* Hiểu AWS là gì và nắm được các nhóm dịch vụ cơ bản: 
-  * Compute
-  * Storage
-  * Networking 
-  * Database
-  * ...
+* Hiểu kiến trúc dự án và trách nhiệm của mình trong nhóm.
+* Hiểu rủi ro chi phí của Amazon Personalize; nhóm thay nó bằng mô hình tự xây (luật mua kèm, item-based collaborative filtering, baseline hàng bán chạy) chạy trên Lambda + DynamoDB (ADR-0016).
+* Viết được bộ sinh dữ liệu giả lập chạy lại ra đúng kết quả (cố định random seed), tạo ra:
+  * sản phẩm, người dùng, đơn hàng, món trong đơn, món trong giỏ;
+  * sự kiện tương tác theo định dạng tương thích Amazon Personalize;
+  * chia train/test theo thời gian để tránh rò rỉ dữ liệu.
+* Thiết kế mô hình dữ liệu 7 bảng và thống nhất quy tắc sự kiện với nhóm, gồm cả cách chống sự kiện `purchase` giả.
+* Viết threat model đầu tiên, bao quát ranh giới trình duyệt–API, bucket dữ liệu huấn luyện, Personalize và bảng gợi ý; hai rủi ro chính mình sẽ kiểm thử là đầu độc dữ liệu và IDOR.
 
-* Đã tạo và cấu hình AWS Free Tier account thành công.
+### Việc còn lại / tuần sau:
 
-* Làm quen với AWS Management Console và biết cách tìm, truy cập, sử dụng dịch vụ từ giao diện web.
-
-* Cài đặt và cấu hình AWS CLI trên máy tính bao gồm:
-  * Access Key
-  * Secret Key
-  * Region mặc định
-  * ...
-
-* Sử dụng AWS CLI để thực hiện các thao tác cơ bản như:
-
-  * Kiểm tra thông tin tài khoản & cấu hình
-  * Lấy danh sách region
-  * Xem dịch vụ EC2
-  * Tạo và quản lý key pair
-  * Kiểm tra thông tin dịch vụ đang chạy
-  * ...
-
-* Có khả năng kết nối giữa giao diện web và CLI để quản lý tài nguyên AWS song song.
-* ...
-
-
+* Làm baseline theo luật (support, confidence, lift) và các chỉ số đánh giá (precision@k, recall@k, coverage).
+* Viết hàm ẩn danh `user_id` bằng HMAC.
